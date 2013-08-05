@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		792FE94117ACFD6C00E29931 /* KXInteraction.m in Sources */ = {isa = PBXBuildFile; fileRef = 792FE94017ACFD6C00E29931 /* KXInteraction.m */; };
 		7960FA1E17ABB15C00026937 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7960FA1D17ABB15C00026937 /* UIKit.framework */; };
 		7960FA2017ABB15C00026937 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7960FA1F17ABB15C00026937 /* Foundation.framework */; };
 		7960FA2217ABB15C00026937 /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7960FA2117ABB15C00026937 /* CoreGraphics.framework */; };
@@ -38,6 +39,8 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		792FE93F17ACFD6C00E29931 /* KXInteraction.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KXInteraction.h; sourceTree = "<group>"; };
+		792FE94017ACFD6C00E29931 /* KXInteraction.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = KXInteraction.m; sourceTree = "<group>"; };
 		7960FA1A17ABB15C00026937 /* KXInteraction.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = KXInteraction.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		7960FA1D17ABB15C00026937 /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
 		7960FA1F17ABB15C00026937 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
@@ -128,6 +131,8 @@
 				7960FA3817ABB15C00026937 /* MainStoryboard_iPad.storyboard */,
 				7960FA3B17ABB15C00026937 /* MasterViewController.h */,
 				7960FA3C17ABB15C00026937 /* MasterViewController.m */,
+				792FE93F17ACFD6C00E29931 /* KXInteraction.h */,
+				792FE94017ACFD6C00E29931 /* KXInteraction.m */,
 				7960FA3E17ABB15C00026937 /* DetailViewController.h */,
 				7960FA3F17ABB15C00026937 /* DetailViewController.m */,
 				7960FA2417ABB15C00026937 /* Supporting Files */,
@@ -283,6 +288,7 @@
 				7960FA2E17ABB15C00026937 /* AppDelegate.m in Sources */,
 				7960FA3D17ABB15C00026937 /* MasterViewController.m in Sources */,
 				7960FA4017ABB15C00026937 /* DetailViewController.m in Sources */,
+				792FE94117ACFD6C00E29931 /* KXInteraction.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -473,6 +479,7 @@
 				7960FA5A17ABB15C00026937 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 		7960FA5B17ABB15C00026937 /* Build configuration list for PBXNativeTarget "KXInteractionTests" */ = {
 			isa = XCConfigurationList;
@@ -481,6 +488,7 @@
 				7960FA5D17ABB15C00026937 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};
