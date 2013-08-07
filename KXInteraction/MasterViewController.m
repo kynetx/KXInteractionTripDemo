@@ -29,12 +29,52 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+    // NSString *path = [NSHomeDirectory() stringByAppendingPathComponent:[NSString stringWithFormat:@"Desktop/sample_iPod.m4v"]];
+   // UISaveVideoAtPathToSavedPhotosAlbum(path, self, @selector(insertNewObject:), nil);
 	// Do any additional setup after loading the view, typically from a nib.
     self.navigationItem.leftBarButtonItem = self.editButtonItem;
 
     UIBarButtonItem *addButton = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemAdd target:self action:@selector(insertNewObject:)];
     self.navigationItem.rightBarButtonItem = addButton;
     self.detailViewController = (DetailViewController *)[[self.splitViewController.viewControllers lastObject] topViewController];
+
+    NSMutableArray *assetItems = [NSMutableArray arrayWithCapacity:0];
+    __block NSMutableDictionary *foo;
+    ALAssetsLibrary *assetLibrary = [[ALAssetsLibrary alloc] init];
+    
+    [assetLibrary enumerateGroupsWithTypes:ALAssetsGroupAll usingBlock:^(ALAssetsGroup *group, BOOL *stop)
+    {
+        if (group)
+        {
+            [group setAssetsFilter:[ALAssetsFilter allVideos]];
+            [group enumerateAssetsUsingBlock:^(ALAsset *asset, NSUInteger index, BOOL *stop)
+             {
+                 if (asset)
+                 {
+                     foo = [[NSMutableDictionary alloc] init];
+                     ALAssetRepresentation *defaultRepresentation = [asset defaultRepresentation];
+                     NSString *uti = [defaultRepresentation UTI];
+                     NSString *videoURL = [[asset valueForProperty:ALAssetPropertyURLs] valueForKey:uti];
+                     
+                     NSString *title = [NSString stringWithFormat:@"%@ %i", NSLocalizedString(@"Video", nil), [foo count]+1];
+                     
+                     [foo setValue:title forKey:@"title"];
+                     [foo setValue:videoURL forKey:@"url"];
+                     [assetItems addObject:foo];
+                     
+                 }
+                 NSLog(@"Values of dictonary==>%@", foo);
+                 
+                 //NSLog(@"assetItems:%@",assetItems);
+                 NSLog(@"Videos Are:%@", assetItems);
+             } ];
+        }
+        // group == nil signals we are done iterating
+        }
+                              failureBlock:^(NSError *error) 
+    {
+        NSLog(@"error enumerating AssetLibrary groups %@\n", error);
+    }];
 }
 
 - (void)didReceiveMemoryWarning

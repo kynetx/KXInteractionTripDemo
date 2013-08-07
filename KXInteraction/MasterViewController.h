@@ -8,6 +8,8 @@
 
 #import <UIKit/UIKit.h>
 
+#import <AssetsLibrary/AssetsLibrary.h>
+
 @class DetailViewController;
 
 @interface MasterViewController : UITableViewController
