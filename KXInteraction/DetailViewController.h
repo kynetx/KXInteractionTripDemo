@@ -7,8 +7,9 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "KXInteraction.h"
 
-@interface DetailViewController : UIViewController <UISplitViewControllerDelegate>
+@interface DetailViewController : UIViewController <UISplitViewControllerDelegate, KXInteractionDelegate>
 
 @property (strong, nonatomic) id detailItem;
 

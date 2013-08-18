@@ -44,7 +44,8 @@
 {
     [super viewDidLoad];
 	// Do any additional setup after loading the view, typically from a nib.
-    [self configureView];
+    KXInteraction* cloudOS = [[KXInteraction alloc] initWithEvalHost:@"https://cs.kobj.net/" andDelegate:self];
+    [cloudOS beginOAuthHandshakeWithAppKey:@"5A09B61E-07AE-11E3-85E4-932EA03AE752" andCallbackURL:@"https://squaretag.com"];
 }
 
 - (void)didReceiveMemoryWarning
