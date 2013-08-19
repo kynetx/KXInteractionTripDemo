@@ -61,9 +61,9 @@
     return self;
 }
 
-- (void) beginOAuthHandshakeWithAppKey:(NSString *)appKey andCallbackURL:(NSString*)callbackURL {
+- (void) beginOAuthHandshakeWithAppKey:(NSString *)appKey andCallbackURL:(NSString*)cbURL {
     
-    NSString* escapedCallbackURL = [callbackURL stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
+    NSString* escapedCallbackURL = [cbURL stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
     NSURL* oauthURL = [self constructOAuthHandshakeDoorbellURL:appKey withCallback:[NSURL URLWithString:escapedCallbackURL]];
     NSURLRequest* oauthRequest = [NSURLRequest requestWithURL:oauthURL];
     
@@ -227,7 +227,7 @@
         // woot! set our oauth code to the extracted string
         self.oauthCode = [urlString substringWithRange:[[codeResults objectAtIndex:0] rangeAtIndex:1]];
         
-        NSLog(@"%@", self.oauthCode);
+        // NSLog(@"%@", self.oauthCode);
         
         [UIView animateWithDuration:0.5 animations:^{
             self.squaretagOAuthView.alpha = 0;
