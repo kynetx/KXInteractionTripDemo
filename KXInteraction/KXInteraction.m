@@ -41,7 +41,7 @@
 
 @implementation KXInteraction
 
-@synthesize delegate, evalHost, oauthCode;
+@synthesize delegate, evalHost, oauthCode, squaretagOAuthView, appkey, callbackURL, oauthLastActResponseRaw;
 
 - (id) init {
     return [self initWithEvalHost:nil andDelegate:nil];
