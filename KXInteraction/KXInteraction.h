@@ -19,7 +19,7 @@
 
 @end
 
-@interface KXInteraction : NSObject <UIWebViewDelegate>
+@interface KXInteraction : NSObject <UIWebViewDelegate, NSURLConnectionDelegate>
 
 // KXInteraction uses a delegate to communicate with the calling class.
 // all messages from KXInteraction will be sent to this delegate.
@@ -38,5 +38,10 @@
 // this is the only outward facing method that is called
 // to oauthenticate to cloudOS
 - (void) beginOAuthHandshakeWithAppKey:(NSString*)appKey andCallbackURL:(NSString*)callbackURL;
+
+// since we are using Automatic Reference Counting, we shouldn't need this, but we have to nil-out
+// the webviews delegate we are using for oauth when we are done using it.
+// Otherwise it is retained and causes all sorts of lovely stuff.
+- (void) dealloc;
 
 @end

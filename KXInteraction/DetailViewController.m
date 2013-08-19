@@ -44,8 +44,8 @@
 {
     [super viewDidLoad];
 	// Do any additional setup after loading the view, typically from a nib.
-    KXInteraction* cloudOS = [[KXInteraction alloc] initWithEvalHost:@"https://cs.kobj.net/" andDelegate:self];
-    [cloudOS beginOAuthHandshakeWithAppKey:@"5A09B61E-07AE-11E3-85E4-932EA03AE752" andCallbackURL:@"https://squaretag.com"];
+    self.cloudOS = [[KXInteraction alloc] initWithEvalHost:@"https://cs.kobj.net/" andDelegate:self];
+    [self.cloudOS beginOAuthHandshakeWithAppKey:@"5A09B61E-07AE-11E3-85E4-932EA03AE752" andCallbackURL:@"https://squaretag.com"];
 }
 
 - (void)didReceiveMemoryWarning
@@ -68,6 +68,12 @@
     // Called when the view is shown again in the split view, invalidating the button and popover controller.
     [self.navigationItem setLeftBarButtonItem:nil animated:YES];
     self.masterPopoverController = nil;
+}
+
+#pragma mark -
+#pragma mark KXInteractionDelegate Methods
+- (void) oauthHandshakeDidSuccedWithECI:(NSString *)eci {
+    self.detailDescriptionLabel.text = eci;
 }
 
 @end
