@@ -15,9 +15,6 @@
 		7960FA2817ABB15C00026937 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 7960FA2617ABB15C00026937 /* InfoPlist.strings */; };
 		7960FA2A17ABB15C00026937 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 7960FA2917ABB15C00026937 /* main.m */; };
 		7960FA2E17ABB15C00026937 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 7960FA2D17ABB15C00026937 /* AppDelegate.m */; };
-		7960FA3017ABB15C00026937 /* Default.png in Resources */ = {isa = PBXBuildFile; fileRef = 7960FA2F17ABB15C00026937 /* Default.png */; };
-		7960FA3217ABB15C00026937 /* Default@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 7960FA3117ABB15C00026937 /* Default@2x.png */; };
-		7960FA3417ABB15C00026937 /* Default-568h@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 7960FA3317ABB15C00026937 /* Default-568h@2x.png */; };
 		7960FA3717ABB15C00026937 /* MainStoryboard_iPhone.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 7960FA3517ABB15C00026937 /* MainStoryboard_iPhone.storyboard */; };
 		7960FA3A17ABB15C00026937 /* MainStoryboard_iPad.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 7960FA3817ABB15C00026937 /* MainStoryboard_iPad.storyboard */; };
 		7960FA3D17ABB15C00026937 /* MasterViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 7960FA3C17ABB15C00026937 /* MasterViewController.m */; };
@@ -27,6 +24,11 @@
 		7960FA4A17ABB15C00026937 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7960FA1F17ABB15C00026937 /* Foundation.framework */; };
 		7960FA5217ABB15C00026937 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 7960FA5017ABB15C00026937 /* InfoPlist.strings */; };
 		7960FA5517ABB15C00026937 /* KXInteractionTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 7960FA5417ABB15C00026937 /* KXInteractionTests.m */; };
+		797EE88017C353B90072AB50 /* Default@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 797EE87F17C353B90072AB50 /* Default@2x.png */; };
+		79DD528F17C349F800C3CEF1 /* kynetx_logo_small.png in Resources */ = {isa = PBXBuildFile; fileRef = 79DD528E17C349F800C3CEF1 /* kynetx_logo_small.png */; };
+		79DD529117C34A7A00C3CEF1 /* kynetx_logo_small_hi_res.png in Resources */ = {isa = PBXBuildFile; fileRef = 79DD529017C34A7A00C3CEF1 /* kynetx_logo_small_hi_res.png */; };
+		79DD529517C34DB400C3CEF1 /* Default.png in Resources */ = {isa = PBXBuildFile; fileRef = 79DD529217C34BBF00C3CEF1 /* Default.png */; };
+		79DD529917C34E5B00C3CEF1 /* Default-568h@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 79DD529817C34E5B00C3CEF1 /* Default-568h@2x.png */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -43,7 +45,7 @@
 		792FE93F17ACFD6C00E29931 /* KXInteraction.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KXInteraction.h; sourceTree = "<group>"; };
 		792FE94017ACFD6C00E29931 /* KXInteraction.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = KXInteraction.m; sourceTree = "<group>"; };
 		793369B317B1A42F00451B3C /* AssetsLibrary.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AssetsLibrary.framework; path = System/Library/Frameworks/AssetsLibrary.framework; sourceTree = SDKROOT; };
-		7960FA1A17ABB15C00026937 /* KXInteraction.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = KXInteraction.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		7960FA1A17ABB15C00026937 /* KXInteractionTestApp.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = KXInteractionTestApp.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		7960FA1D17ABB15C00026937 /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
 		7960FA1F17ABB15C00026937 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
 		7960FA2117ABB15C00026937 /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
@@ -53,9 +55,6 @@
 		7960FA2B17ABB15C00026937 /* KXInteraction-Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "KXInteraction-Prefix.pch"; sourceTree = "<group>"; };
 		7960FA2C17ABB15C00026937 /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
 		7960FA2D17ABB15C00026937 /* AppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
-		7960FA2F17ABB15C00026937 /* Default.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Default.png; sourceTree = "<group>"; };
-		7960FA3117ABB15C00026937 /* Default@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Default@2x.png"; sourceTree = "<group>"; };
-		7960FA3317ABB15C00026937 /* Default-568h@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Default-568h@2x.png"; sourceTree = "<group>"; };
 		7960FA3617ABB15C00026937 /* en */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = en; path = en.lproj/MainStoryboard_iPhone.storyboard; sourceTree = "<group>"; };
 		7960FA3917ABB15C00026937 /* en */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = en; path = en.lproj/MainStoryboard_iPad.storyboard; sourceTree = "<group>"; };
 		7960FA3B17ABB15C00026937 /* MasterViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MasterViewController.h; sourceTree = "<group>"; };
@@ -68,6 +67,11 @@
 		7960FA5117ABB15C00026937 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		7960FA5317ABB15C00026937 /* KXInteractionTests.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = KXInteractionTests.h; sourceTree = "<group>"; };
 		7960FA5417ABB15C00026937 /* KXInteractionTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = KXInteractionTests.m; sourceTree = "<group>"; };
+		797EE87F17C353B90072AB50 /* Default@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Default@2x.png"; sourceTree = "<group>"; };
+		79DD528E17C349F800C3CEF1 /* kynetx_logo_small.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = kynetx_logo_small.png; sourceTree = "<group>"; };
+		79DD529017C34A7A00C3CEF1 /* kynetx_logo_small_hi_res.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = kynetx_logo_small_hi_res.png; sourceTree = "<group>"; };
+		79DD529217C34BBF00C3CEF1 /* Default.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Default.png; sourceTree = "<group>"; };
+		79DD529817C34E5B00C3CEF1 /* Default-568h@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Default-568h@2x.png"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -98,6 +102,11 @@
 		7960FA1117ABB15C00026937 = {
 			isa = PBXGroup;
 			children = (
+				797EE87F17C353B90072AB50 /* Default@2x.png */,
+				79DD529817C34E5B00C3CEF1 /* Default-568h@2x.png */,
+				79DD529217C34BBF00C3CEF1 /* Default.png */,
+				79DD529017C34A7A00C3CEF1 /* kynetx_logo_small_hi_res.png */,
+				79DD528E17C349F800C3CEF1 /* kynetx_logo_small.png */,
 				793369B317B1A42F00451B3C /* AssetsLibrary.framework */,
 				7960FA2317ABB15C00026937 /* KXInteraction */,
 				7960FA4D17ABB15C00026937 /* KXInteractionTests */,
@@ -109,7 +118,7 @@
 		7960FA1B17ABB15C00026937 /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				7960FA1A17ABB15C00026937 /* KXInteraction.app */,
+				7960FA1A17ABB15C00026937 /* KXInteractionTestApp.app */,
 				7960FA4617ABB15C00026937 /* KXInteractionTests.octest */,
 			);
 			name = Products;
@@ -151,9 +160,6 @@
 				7960FA2617ABB15C00026937 /* InfoPlist.strings */,
 				7960FA2917ABB15C00026937 /* main.m */,
 				7960FA2B17ABB15C00026937 /* KXInteraction-Prefix.pch */,
-				7960FA2F17ABB15C00026937 /* Default.png */,
-				7960FA3117ABB15C00026937 /* Default@2x.png */,
-				7960FA3317ABB15C00026937 /* Default-568h@2x.png */,
 			);
 			name = "Supporting Files";
 			sourceTree = "<group>";
@@ -194,7 +200,7 @@
 			);
 			name = KXInteraction;
 			productName = KXInteraction;
-			productReference = 7960FA1A17ABB15C00026937 /* KXInteraction.app */;
+			productReference = 7960FA1A17ABB15C00026937 /* KXInteractionTestApp.app */;
 			productType = "com.apple.product-type.application";
 		};
 		7960FA4517ABB15C00026937 /* KXInteractionTests */ = {
@@ -249,11 +255,13 @@
 			buildActionMask = 2147483647;
 			files = (
 				7960FA2817ABB15C00026937 /* InfoPlist.strings in Resources */,
-				7960FA3017ABB15C00026937 /* Default.png in Resources */,
-				7960FA3217ABB15C00026937 /* Default@2x.png in Resources */,
-				7960FA3417ABB15C00026937 /* Default-568h@2x.png in Resources */,
 				7960FA3717ABB15C00026937 /* MainStoryboard_iPhone.storyboard in Resources */,
 				7960FA3A17ABB15C00026937 /* MainStoryboard_iPad.storyboard in Resources */,
+				79DD528F17C349F800C3CEF1 /* kynetx_logo_small.png in Resources */,
+				79DD529117C34A7A00C3CEF1 /* kynetx_logo_small_hi_res.png in Resources */,
+				79DD529517C34DB400C3CEF1 /* Default.png in Resources */,
+				79DD529917C34E5B00C3CEF1 /* Default-568h@2x.png in Resources */,
+				797EE88017C353B90072AB50 /* Default@2x.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -377,6 +385,7 @@
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				IPHONEOS_DEPLOYMENT_TARGET = 6.1;
 				ONLY_ACTIVE_ARCH = YES;
+				PRODUCT_NAME = KXInteractionTestApp;
 				SDKROOT = iphoneos;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
@@ -402,6 +411,7 @@
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				IPHONEOS_DEPLOYMENT_TARGET = 6.1;
 				OTHER_CFLAGS = "-DNS_BLOCK_ASSERTIONS=1";
+				PRODUCT_NAME = KXInteractionTestApp;
 				SDKROOT = iphoneos;
 				TARGETED_DEVICE_FAMILY = "1,2";
 				VALIDATE_PRODUCT = YES;
@@ -411,10 +421,12 @@
 		7960FA5917ABB15C00026937 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				CODE_SIGN_IDENTITY = "iPhone Developer: Alex Olson (8B6YP4SC9G)";
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "KXInteraction/KXInteraction-Prefix.pch";
 				INFOPLIST_FILE = "KXInteraction/KXInteraction-Info.plist";
-				PRODUCT_NAME = "$(TARGET_NAME)";
+				PRODUCT_NAME = KXInteractionTestApp;
+				PROVISIONING_PROFILE = "388916FE-3855-42CB-BD4E-43E64ABEC3B7";
 				WRAPPER_EXTENSION = app;
 			};
 			name = Debug;
@@ -422,10 +434,12 @@
 		7960FA5A17ABB15C00026937 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				CODE_SIGN_IDENTITY = "iPhone Developer: Alex Olson (8B6YP4SC9G)";
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "KXInteraction/KXInteraction-Prefix.pch";
 				INFOPLIST_FILE = "KXInteraction/KXInteraction-Info.plist";
-				PRODUCT_NAME = "$(TARGET_NAME)";
+				PRODUCT_NAME = KXInteractionTestApp;
+				PROVISIONING_PROFILE = "388916FE-3855-42CB-BD4E-43E64ABEC3B7";
 				WRAPPER_EXTENSION = app;
 			};
 			name = Release;
