@@ -27,9 +27,13 @@
 // is not passed in tandem with the app key in every request.
 @property (strong, nonatomic) NSURL* callbackURL;
 
-// internal property that holds the initial NSData response from the last
-// act in our OAuth Dance.
-@property (strong, nonatomic) NSMutableData* oauthLastActResponseRaw;
+// this is a dictionary that maps our various connection objects to the data that they
+// return
+@property (nonatomic) CFMutableDictionaryRef connectionToDataMap;
+
+// internal property that holds the initial NSData response from our various requests
+// whether it be sky cloud, sky event, whatever.
+@property (strong, nonatomic) NSMutableData* rawResponseContainer;
 
 // private helper method to construct an OAuth code request URL
 - (NSURL*) constructOAuthHandshakeDoorbellURL:(NSString*)applicationKey withCallback:(NSURL*)callback;
@@ -41,7 +45,7 @@
 
 @implementation KXInteraction
 
-@synthesize delegate, evalHost, oauthCode, squaretagOAuthView, appkey, callbackURL, oauthLastActResponseRaw;
+@synthesize delegate, evalHost, oauthCode, squaretagOAuthView, appkey, callbackURL, rawResponseContainer;
 
 - (id) init {
     return [self initWithEvalHost:nil andDelegate:nil];
@@ -55,7 +59,8 @@
         self.oauthCode = nil;
         self.appkey = nil;
         self.callbackURL = nil;
-        self.oauthLastActResponseRaw = nil;
+        self.rawResponseContainer = [NSMutableData data];
+        self.connectionToDataMap = CFDictionaryCreateMutable(kCFAllocatorDefault, 0, &kCFTypeDictionaryKeyCallBacks, &kCFTypeDictionaryValueCallBacks);
     }
     
     return self;
@@ -152,16 +157,11 @@
     [oauthLastDanceRequest setHTTPMethod:@"POST"];
     [oauthLastDanceRequest setHTTPBody:[postDataString dataUsingEncoding:NSUTF8StringEncoding]];
     
-    // inititalize data object that will hold all of our awesome data
-    self.oauthLastActResponseRaw = [NSMutableData data];
     // oh boy...here we go...rev up the engines
     NSURLConnection* oauthLastDanceConnection = [NSURLConnection connectionWithRequest:oauthLastDanceRequest delegate:self];
     
-    if (oauthLastDanceConnection) {
-        [UIApplication sharedApplication].networkActivityIndicatorVisible = YES;
-    } else {
-        NSLog(@"KXInteraction was unable to establish a connection to CloudOS OAuth Service.");
-    }
+    // add this connection to our connection-data mapping
+    CFDictionaryAddValue(self.connectionToDataMap, (__bridge const void *)(oauthLastDanceConnection), (__bridge const void *)([NSMutableDictionary dictionaryWithObject:[NSMutableData data] forKey:@"recievedData"]));
 }
 
 #pragma mark -
@@ -170,12 +170,12 @@
 - (void) connection:(NSURLConnection *)connection didReceiveResponse:(NSURLResponse *)response {
     // houston, we have a connection
     // set our data length to 0
-    [self.oauthLastActResponseRaw setLength:0];
+    [self.rawResponseContainer setLength:0];
 }
 
 - (void) connection:(NSURLConnection *)connection didReceiveData:(NSData *)data {
     // got some data! woot!
-    [self.oauthLastActResponseRaw appendData:data];
+    [self.rawResponseContainer appendData:data];
 }
 
 - (void) connectionDidFinishLoading:(NSURLConnection *)connection {
@@ -184,7 +184,7 @@
     
     NSError* jsonParseError = nil;
     
-    NSDictionary* oauthLastActResponseJSON = [NSJSONSerialization JSONObjectWithData:self.oauthLastActResponseRaw options:0 error:&jsonParseError];
+    NSDictionary* oauthLastActResponseJSON = [NSJSONSerialization JSONObjectWithData:self.rawResponseContainer options:0 error:&jsonParseError];
     
     [self.delegate oauthHandshakeDidSuccedWithECI:[oauthLastActResponseJSON objectForKey:@"OAUTH_ECI"]];
     
