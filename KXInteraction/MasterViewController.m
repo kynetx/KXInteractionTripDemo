@@ -11,6 +11,8 @@
 #import "DetailViewController.h"
 
 @interface MasterViewController () {
+    NSMutableArray* returnedECIArray;
+    KXInteraction* cloudOS;
 }
 @end
 
@@ -30,6 +32,11 @@
     [super viewDidLoad];
 	// Do any additional setup after loading the view, typically from a nib.
     self.navigationItem.leftBarButtonItem = self.editButtonItem;
+    if (!returnedECIArray) {
+        returnedECIArray = [NSMutableArray array];
+        cloudOS = [[KXInteraction alloc] initWithEvalHost:@"https://cs.kobj.net/" andDelegate:self];
+        [cloudOS beginOAuthHandshakeWithAppKey:@"5A09B61E-07AE-11E3-85E4-932EA03AE752" andCallbackURL:@"https://squaretag.com" andParentViewController:self];
+    }
 
     UIBarButtonItem *addButton = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemAdd target:self action:@selector(notYetImplemented:)];
     self.navigationItem.rightBarButtonItem = addButton;
@@ -44,9 +51,6 @@
 
 - (void)notYetImplemented:(id)sender
 {
-    // NSIndexPath *indexPath = [NSIndexPath indexPathForRow:0 inSection:0];
-    // [self.tableView insertRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationAutomatic];
-    
     // show little alert to let people know this has not yet been implemented
     UIAlertView *notYetImplemenetedAlert = [[UIAlertView alloc] initWithTitle:@"No Dice!" message:@"Hey Chris, this feature hasn't been added yet. BROKEN!!!!" delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil];
     
@@ -62,14 +66,14 @@
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
-    return 0;
+    return [returnedECIArray count];
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
     UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:@"Cell" forIndexPath:indexPath];
-    // NSDate *object = _objects[indexPath.row];
-    // cell.textLabel.text = [object description];
+    NSString* eci = returnedECIArray[indexPath.row];
+    cell.textLabel.text = eci;
     
     return cell;
 }
@@ -117,10 +121,19 @@
 - (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender
 {
     if ([[segue identifier] isEqualToString:@"showDetail"]) {
-        NSIndexPath *indexPath = [self.tableView indexPathForSelectedRow];
+        // NSIndexPath *indexPath = [self.tableView indexPathForSelectedRow];
         // NSDate *object = _objects[indexPath.row];
         // [[segue destinationViewController] setDetailItem:object];
     }
+}
+
+#pragma mark -
+#pragma mark KXInteraction Delegate Methods
+- (void) oauthHandshakeDidSuccedWithECI:(NSString *)eci {
+    [returnedECIArray addObject:eci];
+    
+    NSIndexPath *indexPath = [NSIndexPath indexPathForRow:0 inSection:0];
+    [self.tableView insertRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationAutomatic];
 }
 
 @end

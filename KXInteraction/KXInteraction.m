@@ -18,6 +18,9 @@
 // an oauth code
 @property (strong, nonatomic) UIWebView* squaretagOAuthView;
 
+// the container view controller that we place our UIWebview in
+@property (strong, nonatomic) UIViewController* containerViewController;
+
 // the applications key, which we exchange for an OAuth code
 // from CloudOS
 @property (strong, nonatomic) NSString* appkey;
@@ -29,11 +32,7 @@
 
 // this is a dictionary that maps our various connection objects to the data that they
 // return
-@property (nonatomic) CFMutableDictionaryRef connectionToDataMap;
-
-// internal property that holds the initial NSData response from our various requests
-// whether it be sky cloud, sky event, whatever.
-@property (strong, nonatomic) NSMutableData* rawResponseContainer;
+@property (nonatomic) CFMutableDictionaryRef connectionInfoMap;
 
 // private helper method to construct an OAuth code request URL
 - (NSURL*) constructOAuthHandshakeDoorbellURL:(NSString*)applicationKey withCallback:(NSURL*)callback;
@@ -45,7 +44,7 @@
 
 @implementation KXInteraction
 
-@synthesize delegate, evalHost, oauthCode, squaretagOAuthView, appkey, callbackURL, rawResponseContainer;
+@synthesize delegate, evalHost, oauthCode, squaretagOAuthView, containerViewController, appkey, callbackURL, connectionInfoMap;
 
 - (id) init {
     return [self initWithEvalHost:nil andDelegate:nil];
@@ -59,14 +58,13 @@
         self.oauthCode = nil;
         self.appkey = nil;
         self.callbackURL = nil;
-        self.rawResponseContainer = [NSMutableData data];
-        self.connectionToDataMap = CFDictionaryCreateMutable(kCFAllocatorDefault, 0, &kCFTypeDictionaryKeyCallBacks, &kCFTypeDictionaryValueCallBacks);
+        self.connectionInfoMap = CFDictionaryCreateMutable(kCFAllocatorDefault, 0, &kCFTypeDictionaryKeyCallBacks, &kCFTypeDictionaryValueCallBacks);
     }
     
     return self;
 }
 
-- (void) beginOAuthHandshakeWithAppKey:(NSString *)appKey andCallbackURL:(NSString*)cbURL {
+- (void) beginOAuthHandshakeWithAppKey:(NSString *)appKey andCallbackURL:(NSString*)cbURL andParentViewController:(UIViewController *)viewController {
     
     NSString* escapedCallbackURL = [cbURL stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
     NSURL* oauthURL = [self constructOAuthHandshakeDoorbellURL:appKey withCallback:[NSURL URLWithString:escapedCallbackURL]];
@@ -80,9 +78,6 @@
     
     // get current application
     UIApplication* currentApp = [UIApplication sharedApplication];
-    
-    // get the key window of the current application
-    UIWindow* keyWindow = [currentApp keyWindow];
     
     // get the bounds of the current screen
     CGRect currentScreenBounds = [[UIScreen mainScreen] bounds];
@@ -103,6 +98,8 @@
     
     // create the webview
     self.squaretagOAuthView = [[UIWebView alloc] initWithFrame:frame];
+    // store the container view controller
+    self.containerViewController = viewController;
     
     // YES! We have set the viewport meta tag on squaretag.com but it doesn't
     // appear to always solve our problem, so I tell the webview to scale the pages
@@ -110,8 +107,10 @@
     self.squaretagOAuthView.scalesPageToFit = YES;
     self.squaretagOAuthView.delegate = self;
     
-    // add the webview to the applications window
-    [keyWindow addSubview:self.squaretagOAuthView];
+    // hide the views navigation bar while OAuth takes place
+    [self.containerViewController.navigationController setNavigationBarHidden:YES animated:YES];
+    // add the webview to the passed in view
+    [self.containerViewController.view addSubview:self.squaretagOAuthView];
     
     // start loading the oauth request in the webview
     // I could preload this through use of preLoad and a delegate method
@@ -161,7 +160,7 @@
     NSURLConnection* oauthLastDanceConnection = [NSURLConnection connectionWithRequest:oauthLastDanceRequest delegate:self];
     
     // add this connection to our connection-data mapping
-    CFDictionaryAddValue(self.connectionToDataMap, (__bridge const void *)(oauthLastDanceConnection), (__bridge const void *)([NSMutableDictionary dictionaryWithObject:[NSMutableData data] forKey:@"recievedData"]));
+    CFDictionaryAddValue(self.connectionInfoMap, (__bridge const void *)(oauthLastDanceConnection), (__bridge const void *)([NSMutableDictionary dictionaryWithObject:[NSMutableData data] forKey:@"recievedData"]));
 }
 
 #pragma mark -
@@ -170,24 +169,36 @@
 - (void) connection:(NSURLConnection *)connection didReceiveResponse:(NSURLResponse *)response {
     // houston, we have a connection
     // set our data length to 0
-    [self.rawResponseContainer setLength:0];
+    NSMutableDictionary* connectionInfo = CFDictionaryGetValue(self.connectionInfoMap, (__bridge const void *)(connection));
+    [[connectionInfo objectForKey:@"recievedData"] setLength:0];
 }
 
 - (void) connection:(NSURLConnection *)connection didReceiveData:(NSData *)data {
     // got some data! woot!
-    [self.rawResponseContainer appendData:data];
+    NSMutableDictionary* connectionInfo = CFDictionaryGetValue(self.connectionInfoMap, (__bridge const void *)(connection));
+    [[connectionInfo objectForKey:@"recievedData"] appendData:data];
 }
 
 - (void) connectionDidFinishLoading:(NSURLConnection *)connection {
     // we're almost there...hide the network activity indicator
     [UIApplication sharedApplication].networkActivityIndicatorVisible = NO;
     
+    // pull out our current connection info from our map
+    NSMutableDictionary* connectionInfo = CFDictionaryGetValue(self.connectionInfoMap, (__bridge const void *)(connection));
+    
+    // initialize an error object to hold any JSON-parsing errors
     NSError* jsonParseError = nil;
     
-    NSDictionary* oauthLastActResponseJSON = [NSJSONSerialization JSONObjectWithData:self.rawResponseContainer options:0 error:&jsonParseError];
+    // get the requested url of the finishing request as a lowercased string
+    NSString* connectionURLString = connection.currentRequest.URL.absoluteString.lowercaseString;
     
-    [self.delegate oauthHandshakeDidSuccedWithECI:[oauthLastActResponseJSON objectForKey:@"OAUTH_ECI"]];
-    
+    // determine what action to take depending on the connection that is finishing up
+    if ([connectionURLString rangeOfString:@"oauth/access_token"].location != NSNotFound) {
+        // this is an OAuth request...pass the ECI to the appropriate delegate method
+        NSDictionary* oauthLastActResponseJSON = [NSJSONSerialization JSONObjectWithData:[connectionInfo objectForKey:@"recievedData"] options:0 error:&jsonParseError];
+        
+        [self.delegate oauthHandshakeDidSuccedWithECI:[oauthLastActResponseJSON objectForKey:@"OAUTH_ECI"]];
+    }
 }
     
     
@@ -200,7 +211,7 @@
     // get the URL that should load as a string
     NSString* urlString = request.URL.absoluteString;
     
-    if ([urlString rangeOfString:@"code="].location == NSNotFound) {
+    if ([urlString.lowercaseString rangeOfString:@"code="].location == NSNotFound) {
         // we dont have the code yet....
         // continue with the load
         return YES;
@@ -234,6 +245,12 @@
         } completion:^(BOOL done) {
             [self.squaretagOAuthView removeFromSuperview];
         }];
+        
+        // show the navigation bar again.
+        [self.containerViewController.navigationController setNavigationBarHidden:NO animated:YES];
+        
+        // we dont need the container view controller anymore
+        self.containerViewController = nil;
         
         [self exchangeCodeForECI];
         return NO;

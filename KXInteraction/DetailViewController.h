@@ -7,7 +7,6 @@
 //
 
 #import <UIKit/UIKit.h>
-#import "KXInteraction.h"
 
 @interface DetailViewController : UIViewController <UISplitViewControllerDelegate>
 

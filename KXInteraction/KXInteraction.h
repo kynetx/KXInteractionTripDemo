@@ -37,7 +37,7 @@
 // begins the proccess of OAuthenticating to CloudOS
 // this is the only outward facing method that is called
 // to oauthenticate to cloudOS
-- (void) beginOAuthHandshakeWithAppKey:(NSString*)appKey andCallbackURL:(NSString*)callbackURL;
+- (void) beginOAuthHandshakeWithAppKey:(NSString*)appKey andCallbackURL:(NSString*)callbackURL andParentViewController:(UIViewController*)viewController;
 
 // since we are using Automatic Reference Counting, we shouldn't need this, but we have to nil-out
 // the webviews delegate we are using for oauth when we are done using it.

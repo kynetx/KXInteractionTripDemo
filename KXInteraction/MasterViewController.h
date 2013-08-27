@@ -10,9 +10,11 @@
 
 #import <AssetsLibrary/AssetsLibrary.h>
 
+#import "KXInteraction.h"
+
 @class DetailViewController;
 
-@interface MasterViewController : UITableViewController
+@interface MasterViewController : UITableViewController <KXInteractionDelegate>
 
 @property (strong, nonatomic) DetailViewController *detailViewController;
 
