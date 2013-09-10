@@ -48,7 +48,7 @@
 
 @implementation KXInteraction
 
-@synthesize delegate, evalHost, oauthCode, squaretagOAuthView, containerViewController, appkey, callbackURL, connectionInfoMap;
+@synthesize delegate, evalHost, oauthCode, squaretagOAuthView, containerViewController, appkey, callbackURL, connectionInfoMap, masterECI;
 
 - (id) init {
     return [self initWithEvalHost:nil andDelegate:nil];
