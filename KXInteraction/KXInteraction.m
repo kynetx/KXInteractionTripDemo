@@ -10,6 +10,10 @@
 
 @interface KXInteraction()
 
+// an event channel for the master personal cloud we are
+// connected to
+@property (strong, nonatomic) NSString* masterECI;
+
 // private property that stores the oauth code returned from
 // cloudOS that is then used to request an ECI
 @property (strong, nonatomic) NSString* oauthCode;
@@ -54,6 +58,8 @@
     
     if (self = [super init]) {
         self.evalHost = [NSURL URLWithString:host];
+        // this will be nil if theres nothing in nsuserdefaults under that key
+        self.masterECI = [[NSUserDefaults standardUserDefaults] objectForKey:@"com.kxinteraction.masterECI"];
         self.delegate = del;
         self.oauthCode = nil;
         self.appkey = nil;
@@ -65,6 +71,11 @@
 }
 
 - (void) beginOAuthHandshakeWithAppKey:(NSString *)appKey andCallbackURL:(NSString*)cbURL andParentViewController:(UIViewController *)viewController {
+    
+    // check to see if we are already authorized, if we are, get the heck outta dodge.
+    if ([self authorized]) {
+        return;
+    }
     
     NSString* escapedCallbackURL = [cbURL stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
     NSURL* oauthURL = [self constructOAuthHandshakeDoorbellURL:appKey withCallback:[NSURL URLWithString:escapedCallbackURL]];
@@ -118,6 +129,56 @@
     // about 2 seconds. One improvement would be to add an activity indicator
     // to indicate that stuff is loading.
     [self.squaretagOAuthView loadRequest:oauthRequest];
+}
+
+- (BOOL) authorized {
+    return self.masterECI != nil;
+}
+
+- (void) callSkyCloudWithModule:(NSString *)module andFunction:(NSString*)func withParamaters:(id)params andECI:(id)eci andSuccess:(void (^)(NSDictionary*))success {
+    NSMutableString* skyCloudCommand = [NSString stringWithFormat:@"sky/cloud/%@/%@", module, func];
+    NSURL* urlForSkyCloudConnection;
+    
+    if (params == nil) {
+        urlForSkyCloudConnection = [NSURL URLWithString:skyCloudCommand relativeToURL:self.evalHost];
+    } else {
+        __block NSInteger enumerationCount = 0;
+        [params enumerateKeysAndObjectsUsingBlock:^(id key, id value, BOOL* stop) {
+            if (enumerationCount == 0) {
+                [skyCloudCommand appendFormat:@"?%@=%@", [key stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding], [value stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding]];
+            } else {
+                [skyCloudCommand appendFormat:@"&%@=%@", [key stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding], [value stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding]];
+            }
+            
+            enumerationCount++;
+        }];
+        
+        urlForSkyCloudConnection = [NSURL URLWithString:skyCloudCommand relativeToURL:self.evalHost];
+    }
+    
+    NSMutableURLRequest* skyCloudRequest = [NSMutableURLRequest requestWithURL:urlForSkyCloudConnection];
+    if (eci != nil) {
+        [skyCloudRequest setValue:eci forHTTPHeaderField:@"Kobj-Session"];
+    } else {
+        [skyCloudRequest setValue:self.masterECI forHTTPHeaderField:@"Kobj-Session"];
+    }
+    
+    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
+        NSData* skyCloudData = [NSURLConnection sendSynchronousRequest:skyCloudRequest returningResponse:nil error:nil];
+        NSDictionary* skyCloudResponse = [NSJSONSerialization JSONObjectWithData:skyCloudData options:0 error:nil];
+        
+        dispatch_async(dispatch_get_main_queue(), ^{
+            success(skyCloudResponse);
+        });
+    });
+    
+}
+
+- (void) getMyThings:(void (^)(NSDictionary *))success {
+    // just call sky cloud
+    [self callSkyCloudWithModule:@"mythings" andFunction:@"getThings" withParamaters:nil andECI:nil andSuccess:^(NSDictionary* things) {
+        success(things);
+    }];
 }
 
 #pragma mark -
@@ -197,8 +258,17 @@
         // this is an OAuth request...pass the ECI to the appropriate delegate method
         NSDictionary* oauthLastActResponseJSON = [NSJSONSerialization JSONObjectWithData:[connectionInfo objectForKey:@"recievedData"] options:0 error:&jsonParseError];
         
-        [self.delegate oauthHandshakeDidSuccedWithECI:[oauthLastActResponseJSON objectForKey:@"OAUTH_ECI"]];
+        // save the eci to nsuserdefaults so that we have it for later, and send a message to the delegate
+        // to let them know that they can now perform privileged operations.
+        NSString* eci = [oauthLastActResponseJSON objectForKey:@"OAUTH_ECI"];
+        NSUserDefaults* defaults = [NSUserDefaults standardUserDefaults];
+        [defaults setValue:eci forKey:@"com.kxinteraction.masterECI"];
+        self.masterECI = eci;
+        [self.delegate oauthHandshakeDidSucced];
     }
+    
+    // last thing we do is remove this connection from our connection map
+    CFDictionaryRemoveValue(self.connectionInfoMap, (__bridge const void *)(connection));
 }
     
     

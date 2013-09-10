@@ -18,4 +18,7 @@
 
 @property (strong, nonatomic) DetailViewController *detailViewController;
 
+// this loads a list of all things registered with an account into the tableview.
+- (void) loadMyThingsList;
+
 @end

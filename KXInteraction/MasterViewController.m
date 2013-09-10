@@ -11,7 +11,7 @@
 #import "DetailViewController.h"
 
 @interface MasterViewController () {
-    NSMutableArray* returnedECIArray;
+    NSMutableArray* myThings;
     KXInteraction* cloudOS;
 }
 @end
@@ -32,15 +32,29 @@
     [super viewDidLoad];
 	// Do any additional setup after loading the view, typically from a nib.
     self.navigationItem.leftBarButtonItem = self.editButtonItem;
-    if (!returnedECIArray) {
-        returnedECIArray = [NSMutableArray array];
+    if (!myThings) {
+        myThings = [NSMutableArray array];
         cloudOS = [[KXInteraction alloc] initWithEvalHost:@"https://cs.kobj.net/" andDelegate:self];
-        [cloudOS beginOAuthHandshakeWithAppKey:@"5A09B61E-07AE-11E3-85E4-932EA03AE752" andCallbackURL:@"https://squaretag.com" andParentViewController:self];
+        if (![cloudOS authorized]) {
+            [cloudOS beginOAuthHandshakeWithAppKey:@"5A09B61E-07AE-11E3-85E4-932EA03AE752" andCallbackURL:@"https://squaretag.com" andParentViewController:self];
+        } else {
+            [self loadMyThingsList];
+        }
     }
 
     UIBarButtonItem *addButton = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemAdd target:self action:@selector(notYetImplemented:)];
     self.navigationItem.rightBarButtonItem = addButton;
     self.detailViewController = (DetailViewController *)[[self.splitViewController.viewControllers lastObject] topViewController];
+}
+
+- (void) loadMyThingsList {
+    [cloudOS getMyThings:^(NSDictionary* things) {
+        [things enumerateKeysAndObjectsUsingBlock:^(id key, id thing, BOOL* stop) {
+            [myThings addObject:[thing objectForKey:@"myProfileName"]];
+            NSArray* paths = [NSArray arrayWithObject:[NSIndexPath indexPathForRow:[myThings count] - 1 inSection:0]];
+            [[self tableView] insertRowsAtIndexPaths:paths withRowAnimation:UITableViewRowAnimationAutomatic];
+        }];
+    }];
 }
 
 - (void)didReceiveMemoryWarning
@@ -66,14 +80,13 @@
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
-    return [returnedECIArray count];
+    return [myThings count];
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
     UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:@"Cell" forIndexPath:indexPath];
-    NSString* eci = returnedECIArray[indexPath.row];
-    cell.textLabel.text = eci;
+    cell.textLabel.text = myThings[indexPath.row];
     
     return cell;
 }
@@ -129,11 +142,8 @@
 
 #pragma mark -
 #pragma mark KXInteraction Delegate Methods
-- (void) oauthHandshakeDidSuccedWithECI:(NSString *)eci {
-    [returnedECIArray addObject:eci];
-    
-    NSIndexPath *indexPath = [NSIndexPath indexPathForRow:0 inSection:0];
-    [self.tableView insertRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationAutomatic];
+- (void) oauthHandshakeDidSucced {
+    [self loadMyThingsList];
 }
 
 @end
