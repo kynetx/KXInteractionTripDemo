@@ -32,6 +32,7 @@
     // Update the user interface for the detail item.
     self.startTimeLabel.text = [KXInteraction evaluateHumanFriendlyTimeFromUTCTimestamp:[trip objectForKey:@"startTime"]];
     self.endTimeLabel.text = [KXInteraction evaluateHumanFriendlyTimeFromUTCTimestamp:[trip objectForKey:@"endTime"]];
+    self.durationLabel.text = [trip objectForKey:@"duration"];
 }
 
 - (void)viewDidLoad

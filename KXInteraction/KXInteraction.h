@@ -49,6 +49,10 @@
 // calls sky cloud API.
 - (void) callSkyCloudWithModule:(NSString*)module andFunction:(NSString*)func withParamaters:(id)params andECI:(id)eci andSuccess:(void (^)(id response))success;
 
+// insert UTC-compliant seperators into a non-seperated UTC timestamp
+// and return the result as an NSDate.
++ (NSDate*) insertSeperatorsIntoUTCTimestamp:(NSString*)UTCTimestamp;
+
 // converts an unfriendly UTC timestamp into a human-readable datetime
 + (NSString*) evaluateHumanFriendlyTimeFromUTCTimestamp:(NSString*)unfriendlyUTCTimestamp;
 

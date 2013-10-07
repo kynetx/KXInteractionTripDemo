@@ -330,19 +330,25 @@
 }
 
 #pragma mark -
-#pragma mark static utility methods
+#pragma mark class utility methods
 
-+ (NSString*) evaluateHumanFriendlyTimeFromUTCTimestamp:(NSString *)unfriendlyUTCTimestamp {
-    // convert to properely formatted UTC timestamp
++ (NSDate*) insertSeperatorsIntoUTCTimestamp:(NSString *)UTCTimestamp {
+    // convert to seperated UTC timestamp
     NSDateFormatter* datePrettyPrinter = [[NSDateFormatter alloc] init];
     [datePrettyPrinter setTimeZone:[NSTimeZone timeZoneWithAbbreviation:@"UTC"]];
     [datePrettyPrinter setDateFormat:@"yyyyMMdd'T'HHmmss'+'ssss"];
-    NSDate* UTCTripTime = [datePrettyPrinter dateFromString:unfriendlyUTCTimestamp];
+    return [datePrettyPrinter dateFromString:UTCTimestamp];
     
-    // now convert to local human-friendly datetime string
+}
+
++ (NSString*) evaluateHumanFriendlyTimeFromUTCTimestamp:(NSString *)unfriendlyUTCTimestamp {
+
+    
+    // convert to local human-friendly datetime string
+    NSDateFormatter* datePrettyPrinter = [[NSDateFormatter alloc] init];
     [datePrettyPrinter setTimeZone:[NSTimeZone defaultTimeZone]];
     [datePrettyPrinter setDateFormat:@"MMMM d 'at' h:mm a"];
-    return [datePrettyPrinter stringFromDate:UTCTripTime];
+    return [datePrettyPrinter stringFromDate:[self insertSeperatorsIntoUTCTimestamp:unfriendlyUTCTimestamp]];
 }
 
 
