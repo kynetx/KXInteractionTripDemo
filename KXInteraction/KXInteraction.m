@@ -79,6 +79,7 @@
     
     NSString* escapedCallbackURL = [cbURL stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
     NSURL* oauthURL = [self constructOAuthHandshakeDoorbellURL:appKey withCallback:[NSURL URLWithString:escapedCallbackURL]];
+    NSLog(@"%@", oauthURL);
     NSURLRequest* oauthRequest = [NSURLRequest requestWithURL:oauthURL];
     
     // programatically add UIWebview to handle user approval of OAuthentication.
@@ -135,8 +136,8 @@
     return self.masterECI != nil;
 }
 
-- (void) callSkyCloudWithModule:(NSString *)module andFunction:(NSString*)func withParamaters:(id)params andECI:(id)eci andSuccess:(void (^)(NSDictionary*))success {
-    NSMutableString* skyCloudCommand = [NSString stringWithFormat:@"sky/cloud/%@/%@", module, func];
+- (void) callSkyCloudWithModule:(NSString *)module andFunction:(NSString*)func withParamaters:(id)params andECI:(id)eci andSuccess:(void (^)(id))success {
+    NSMutableString* skyCloudCommand = [NSMutableString stringWithFormat:@"sky/cloud/%@/%@", module, func];
     NSURL* urlForSkyCloudConnection;
     
     if (params == nil) {
@@ -165,7 +166,7 @@
     
     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
         NSData* skyCloudData = [NSURLConnection sendSynchronousRequest:skyCloudRequest returningResponse:nil error:nil];
-        NSDictionary* skyCloudResponse = [NSJSONSerialization JSONObjectWithData:skyCloudData options:0 error:nil];
+        id skyCloudResponse = [NSJSONSerialization JSONObjectWithData:skyCloudData options:0 error:nil];
         
         dispatch_async(dispatch_get_main_queue(), ^{
             success(skyCloudResponse);
@@ -231,7 +232,8 @@
     // houston, we have a connection
     // set our data length to 0
     NSMutableDictionary* connectionInfo = CFDictionaryGetValue(self.connectionInfoMap, (__bridge const void *)(connection));
-    [[connectionInfo objectForKey:@"recievedData"] setLength:0];
+    NSMutableData* connectionData = [connectionInfo objectForKey:@"recievedData"];
+    [connectionData setLength:0];
 }
 
 - (void) connection:(NSURLConnection *)connection didReceiveData:(NSData *)data {
@@ -326,6 +328,26 @@
         return NO;
     }
 }
+
+#pragma mark -
+#pragma mark static utility methods
+
++ (NSString*) evaluateHumanFriendlyTimeFromUTCTimestamp:(NSString *)unfriendlyUTCTimestamp {
+    // convert to properely formatted UTC timestamp
+    NSDateFormatter* datePrettyPrinter = [[NSDateFormatter alloc] init];
+    [datePrettyPrinter setTimeZone:[NSTimeZone timeZoneWithAbbreviation:@"UTC"]];
+    [datePrettyPrinter setDateFormat:@"yyyyMMdd'T'HHmmss'+'ssss"];
+    NSDate* UTCTripTime = [datePrettyPrinter dateFromString:unfriendlyUTCTimestamp];
+    
+    // now convert to local human-friendly datetime string
+    [datePrettyPrinter setTimeZone:[NSTimeZone defaultTimeZone]];
+    [datePrettyPrinter setDateFormat:@"MMMM d 'at' h:mm a"];
+    return [datePrettyPrinter stringFromDate:UTCTripTime];
+}
+
+
+#pragma mark -
+#pragma mark destructor
 
 - (void) dealloc {
     // GRR!!! Die delegate DIE!!!!

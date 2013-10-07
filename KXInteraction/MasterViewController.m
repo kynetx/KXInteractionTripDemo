@@ -11,7 +11,7 @@
 #import "DetailViewController.h"
 
 @interface MasterViewController () {
-    NSMutableArray* myThings;
+    NSMutableArray* trips;
     KXInteraction* cloudOS;
 }
 @end
@@ -32,13 +32,13 @@
     [super viewDidLoad];
 	// Do any additional setup after loading the view, typically from a nib.
     self.navigationItem.leftBarButtonItem = self.editButtonItem;
-    if (!myThings) {
-        myThings = [NSMutableArray array];
+    if (!trips) {
+        trips = [NSMutableArray array];
         cloudOS = [[KXInteraction alloc] initWithEvalHost:@"https://cs.kobj.net/" andDelegate:self];
         if (![cloudOS authorized]) {
             [cloudOS beginOAuthHandshakeWithAppKey:@"5A09B61E-07AE-11E3-85E4-932EA03AE752" andCallbackURL:@"https://squaretag.com" andParentViewController:self];
         } else {
-            [self loadMyThingsList];
+            [self loadTrips];
         }
     }
 
@@ -47,15 +47,25 @@
     self.detailViewController = (DetailViewController *)[[self.splitViewController.viewControllers lastObject] topViewController];
 }
 
-- (void) loadMyThingsList {
-    [cloudOS getMyThings:^(NSDictionary* things) {
-        [things enumerateKeysAndObjectsUsingBlock:^(id key, id thing, BOOL* stop) {
-            [myThings addObject:[thing objectForKey:@"myProfileName"]];
-            NSArray* paths = [NSArray arrayWithObject:[NSIndexPath indexPathForRow:[myThings count] - 1 inSection:0]];
-            [[self tableView] insertRowsAtIndexPaths:paths withRowAnimation:UITableViewRowAnimationAutomatic];
+- (void) loadTrips {
+    // TODO: This is a no-no. Need to get the ECI of the vehicle more OAuthly.
+    [cloudOS callSkyCloudWithModule:@"a169x739" andFunction:@"get_all_trips" withParamaters:nil andECI:@"B87948E0-2306-11E3-953D-B39BDC00B96D" andSuccess:^(NSArray* trips) {
+        [trips enumerateObjectsUsingBlock:^(id trip, NSUInteger index, BOOL* stop) {
+            [self->trips addObject:trip];
+            NSArray* paths = [NSArray arrayWithObject:[NSIndexPath indexPathForRow:[self->trips count] - 1 inSection:0]];
+            [[self tableView] insertRowsAtIndexPaths:paths withRowAnimation:UITableViewRowAnimationRight];
         }];
     }];
 }
+//- (void) loadMyThingsList {
+//    [cloudOS getMyThings:^(NSDictionary* things) {
+//        [things enumerateKeysAndObjectsUsingBlock:^(id key, id thing, BOOL* stop) {
+//            [myThings addObject:[thing objectForKey:@"myProfileName"]];
+//            NSArray* paths = [NSArray arrayWithObject:[NSIndexPath indexPathForRow:[myThings count] - 1 inSection:0]];
+//            [[self tableView] insertRowsAtIndexPaths:paths withRowAnimation:UITableViewRowAnimationAutomatic];
+//        }];
+//    }];
+//}
 
 - (void)didReceiveMemoryWarning
 {
@@ -80,13 +90,15 @@
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
-    return [myThings count];
+    return [trips count];
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
     UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:@"Cell" forIndexPath:indexPath];
-    cell.textLabel.text = myThings[indexPath.row];
+    NSDictionary* thisTrip = trips[indexPath.row];
+    cell.textLabel.text = [KXInteraction evaluateHumanFriendlyTimeFromUTCTimestamp:[thisTrip objectForKey:@"startTime"]];
+    cell.detailTextLabel.text = [NSString stringWithFormat:@"%@ miles", [thisTrip objectForKey:@"mileage"]];
     
     return cell;
 }
@@ -100,7 +112,7 @@
 - (void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath
 {
     if (editingStyle == UITableViewCellEditingStyleDelete) {
-    //    [_objects removeObjectAtIndex:indexPath.row];
+        [trips removeObjectAtIndex:indexPath.row];
         [tableView deleteRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationFade];
     } else if (editingStyle == UITableViewCellEditingStyleInsert) {
         // Create a new instance of the appropriate class, insert it into the array, and add a new row to the table view.
@@ -134,16 +146,16 @@
 - (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender
 {
     if ([[segue identifier] isEqualToString:@"showDetail"]) {
-        // NSIndexPath *indexPath = [self.tableView indexPathForSelectedRow];
-        // NSDate *object = _objects[indexPath.row];
-        // [[segue destinationViewController] setDetailItem:object];
+        NSIndexPath *indexPath = [self.tableView indexPathForSelectedRow];
+        NSDictionary *trip = trips[indexPath.row];
+        [[segue destinationViewController] setTrip:trip];
     }
 }
 
 #pragma mark -
 #pragma mark KXInteraction Delegate Methods
 - (void) oauthHandshakeDidSucced {
-    [self loadMyThingsList];
+    [self loadTrips];
 }
 
 @end

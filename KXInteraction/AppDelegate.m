@@ -19,9 +19,9 @@
         splitViewController.delegate = (id)navigationController.topViewController;
     }
     
-    [[UINavigationBar appearance] setBackgroundImage:[[UIImage alloc] init] forBarMetrics:UIBarMetricsDefault];
-    [[UINavigationBar appearance] setBackgroundColor:[UIColor orangeColor]];
-    [[UINavigationBar appearance] setTintColor:[UIColor orangeColor]];
+    // [[UINavigationBar appearance] setBackgroundImage:[[UIImage alloc] init] forBarMetrics:UIBarMetricsDefault];
+    // [[UINavigationBar appearance] setBackgroundColor:[UIColor orangeColor]];
+    // [[UINavigationBar appearance] setTintColor:[UIColor orangeColor]];
     
     return YES;
 }

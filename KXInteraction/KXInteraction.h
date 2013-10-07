@@ -47,7 +47,10 @@
 - (void) getMyThings:(void (^)(NSDictionary* things))success;
 
 // calls sky cloud API.
-- (void) callSkyCloudWithModule:(NSString*)module andFunction:(NSString*)func withParamaters:(id)params andECI:(id)eci andSuccess:(void (^)(NSDictionary*))success;
+- (void) callSkyCloudWithModule:(NSString*)module andFunction:(NSString*)func withParamaters:(id)params andECI:(id)eci andSuccess:(void (^)(id response))success;
+
+// converts an unfriendly UTC timestamp into a human-readable datetime
++ (NSString*) evaluateHumanFriendlyTimeFromUTCTimestamp:(NSString*)unfriendlyUTCTimestamp;
 
 // since we are using Automatic Reference Counting, we shouldn't need this, but we have to nil-out
 // the webviews delegate we are using for oauth when we are done using it.

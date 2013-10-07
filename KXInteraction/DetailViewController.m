@@ -15,15 +15,12 @@
 
 @implementation DetailViewController
 
-#pragma mark - Managing the detail item
+@synthesize trip, startTimeLabel, endTimeLabel, tripMap;
 
-- (void)setDetailItem:(id)newDetailItem
+- (void)setTrip:(id)newTrip
 {
-    if (_detailItem != newDetailItem) {
-        _detailItem = newDetailItem;
-        
-        // Update the view.
-        [self configureView];
+    if (trip != newTrip) {
+        trip = newTrip;
     }
 
     if (self.masterPopoverController != nil) {
@@ -31,19 +28,20 @@
     }        
 }
 
-- (void)configureView
-{
+- (void)configureView {
     // Update the user interface for the detail item.
-
-    if (self.detailItem) {
-        self.detailDescriptionLabel.text = [self.detailItem description];
-    }
+    self.startTimeLabel.text = [KXInteraction evaluateHumanFriendlyTimeFromUTCTimestamp:[trip objectForKey:@"startTime"]];
+    self.endTimeLabel.text = [KXInteraction evaluateHumanFriendlyTimeFromUTCTimestamp:[trip objectForKey:@"endTime"]];
 }
 
 - (void)viewDidLoad
 {
     [super viewDidLoad];
 	// Do any additional setup after loading the view, typically from a nib.
+    
+    // update user interface to display current trip data.
+    [self configureView];
+    
 }
 
 - (void)didReceiveMemoryWarning

@@ -7,11 +7,15 @@
 //
 
 #import <UIKit/UIKit.h>
+#import <MapKit/MapKit.h>
+#import "KXInteraction.h"
 
 @interface DetailViewController : UIViewController <UISplitViewControllerDelegate>
 
-@property (strong, nonatomic) id detailItem;
-
-@property (weak, nonatomic) IBOutlet UILabel *detailDescriptionLabel;
+@property (strong, nonatomic) NSDictionary* trip;
+@property (strong, nonatomic) IBOutlet UILabel* startTimeLabel;
+@property (strong, nonatomic) IBOutlet UILabel* endTimeLabel;
+@property (strong, nonatomic) IBOutlet UILabel* durationLabel;
+@property (strong, nonatomic) IBOutlet MKMapView* tripMap;
 
 @end
