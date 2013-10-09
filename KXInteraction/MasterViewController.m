@@ -96,9 +96,20 @@
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
     UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:@"Cell" forIndexPath:indexPath];
+    
     NSDictionary* thisTrip = trips[indexPath.row];
     cell.textLabel.text = [KXInteraction evaluateHumanFriendlyTimeFromUTCTimestamp:[thisTrip objectForKey:@"startTime"]];
-    cell.detailTextLabel.text = [NSString stringWithFormat:@"%@ miles", [thisTrip objectForKey:@"mileage"]];
+    NSString* mileage = [thisTrip objectForKey:@"mileage"];
+    // genau is German for exact. But more exact than our exact. Yeah.
+    double genauMileage = [mileage doubleValue];
+    NSString* mileageText;
+    if (genauMileage < 0.1) { // if the trip mileage was less than a tenth of a mile, it becomes weird to look at exact mileage data.
+        mileageText = @"Less than a tenth of a mile.";
+    } else {
+        mileageText = [NSString stringWithFormat:@"%@ miles", mileage];
+    }
+    
+    cell.detailTextLabel.text = mileageText;
     
     return cell;
 }

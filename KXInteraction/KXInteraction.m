@@ -342,12 +342,33 @@
 }
 
 + (NSString*) evaluateHumanFriendlyTimeFromUTCTimestamp:(NSString *)unfriendlyUTCTimestamp {
-
+    
+    NSDate* seperatedUTCTimestamp = [self insertSeperatorsIntoUTCTimestamp:unfriendlyUTCTimestamp];
+    // date suffixs for more human friendlyness
+    // Also, YAY FOR NEW OBJECTIVE-C LITERALS!!!! :)
+    NSArray* dateSuffixs = @[@"th", @"st", @"nd", @"rd", @"th", @"th", @"th", @"th", @"th", @"th"];
+    
     // convert to local human-friendly datetime string
     NSDateFormatter* datePrettyPrinter = [[NSDateFormatter alloc] init];
     [datePrettyPrinter setTimeZone:[NSTimeZone defaultTimeZone]];
-    [datePrettyPrinter setDateFormat:@"MMMM d 'at' h:mm a"];
-    return [datePrettyPrinter stringFromDate:[self insertSeperatorsIntoUTCTimestamp:unfriendlyUTCTimestamp]];
+    [datePrettyPrinter setDateFormat:@"MMMM d. 'at' h:mm a"];
+    NSString* dateString = [datePrettyPrinter stringFromDate:seperatedUTCTimestamp];
+    
+    // now we extract the day from the seperated UTC timestamp so we can add a suffix to it.
+    [datePrettyPrinter setDateFormat:@"d"];
+    int dateDay = [[datePrettyPrinter stringFromDate:seperatedUTCTimestamp] intValue];
+    
+    // determine what suffix to add to the date day.
+    NSString* humanFriendlyTime;
+    
+    // if the date is...
+    if (dateDay  >= 11 && dateDay <= 19) { // ...between 11 - 19, because the gregorian calendar is weird like that.
+        humanFriendlyTime = [dateString stringByReplacingOccurrencesOfString:@"." withString:dateSuffixs[0]];
+    } else { // ...anything else, modulo it by 10 and return matching index in dateSuffixs array. This will return the correct suffix. Because math is cool like that.
+        humanFriendlyTime = [dateString stringByReplacingOccurrencesOfString:@"." withString:dateSuffixs[dateDay % 10]];
+    }
+    
+    return humanFriendlyTime;
 }
 
 
