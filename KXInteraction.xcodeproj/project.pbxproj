@@ -26,6 +26,7 @@
 		7960FA5217ABB15C00026937 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 7960FA5017ABB15C00026937 /* InfoPlist.strings */; };
 		7960FA5517ABB15C00026937 /* KXInteractionTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 7960FA5417ABB15C00026937 /* KXInteractionTests.m */; };
 		797EE88017C353B90072AB50 /* Default@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 797EE87F17C353B90072AB50 /* Default@2x.png */; };
+		79802B971805C1830010F0A8 /* trip_info_icon.png in Resources */ = {isa = PBXBuildFile; fileRef = 79802B961805C1830010F0A8 /* trip_info_icon.png */; };
 		79DD528F17C349F800C3CEF1 /* kynetx_logo_small.png in Resources */ = {isa = PBXBuildFile; fileRef = 79DD528E17C349F800C3CEF1 /* kynetx_logo_small.png */; };
 		79DD529117C34A7A00C3CEF1 /* kynetx_logo_small_hi_res.png in Resources */ = {isa = PBXBuildFile; fileRef = 79DD529017C34A7A00C3CEF1 /* kynetx_logo_small_hi_res.png */; };
 		79DD529517C34DB400C3CEF1 /* Default.png in Resources */ = {isa = PBXBuildFile; fileRef = 79DD529217C34BBF00C3CEF1 /* Default.png */; };
@@ -70,6 +71,7 @@
 		7960FA5317ABB15C00026937 /* KXInteractionTests.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = KXInteractionTests.h; sourceTree = "<group>"; };
 		7960FA5417ABB15C00026937 /* KXInteractionTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = KXInteractionTests.m; sourceTree = "<group>"; };
 		797EE87F17C353B90072AB50 /* Default@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Default@2x.png"; sourceTree = "<group>"; };
+		79802B961805C1830010F0A8 /* trip_info_icon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = trip_info_icon.png; sourceTree = "<group>"; };
 		79DD528E17C349F800C3CEF1 /* kynetx_logo_small.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = kynetx_logo_small.png; sourceTree = "<group>"; };
 		79DD529017C34A7A00C3CEF1 /* kynetx_logo_small_hi_res.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = kynetx_logo_small_hi_res.png; sourceTree = "<group>"; };
 		79DD529217C34BBF00C3CEF1 /* Default.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Default.png; sourceTree = "<group>"; };
@@ -110,6 +112,7 @@
 				79DD529217C34BBF00C3CEF1 /* Default.png */,
 				79DD529017C34A7A00C3CEF1 /* kynetx_logo_small_hi_res.png */,
 				79DD528E17C349F800C3CEF1 /* kynetx_logo_small.png */,
+				79802B961805C1830010F0A8 /* trip_info_icon.png */,
 				793369B317B1A42F00451B3C /* AssetsLibrary.framework */,
 				7960FA2317ABB15C00026937 /* KXInteraction */,
 				7960FA4D17ABB15C00026937 /* KXInteractionTests */,
@@ -263,6 +266,7 @@
 				7960FA3A17ABB15C00026937 /* MainStoryboard_iPad.storyboard in Resources */,
 				79DD528F17C349F800C3CEF1 /* kynetx_logo_small.png in Resources */,
 				79DD529117C34A7A00C3CEF1 /* kynetx_logo_small_hi_res.png in Resources */,
+				79802B971805C1830010F0A8 /* trip_info_icon.png in Resources */,
 				79DD529517C34DB400C3CEF1 /* Default.png in Resources */,
 				79DD529917C34E5B00C3CEF1 /* Default-568h@2x.png in Resources */,
 				797EE88017C353B90072AB50 /* Default@2x.png in Resources */,

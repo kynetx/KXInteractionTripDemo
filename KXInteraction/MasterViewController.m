@@ -3,7 +3,7 @@
 //  KXInteraction
 //
 //  Created by Alex Olson on 8/2/13.
-//  Copyright (c) 2013 Alex Olson. All rights reserved.
+//  Copyright (c) 2013 Kynetx. All rights reserved.
 //
 
 #import "MasterViewController.h"
@@ -145,7 +145,7 @@
 
 - (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender
 {
-    if ([[segue identifier] isEqualToString:@"showDetail"]) {
+    if ([[segue identifier] isEqualToString:@"showTripMap"]) {
         NSIndexPath *indexPath = [self.tableView indexPathForSelectedRow];
         NSDictionary *trip = trips[indexPath.row];
         [[segue destinationViewController] setTrip:trip];

@@ -3,14 +3,14 @@
 //  KXInteraction
 //
 //  Created by Alex Olson on 8/2/13.
-//  Copyright (c) 2013 Alex Olson. All rights reserved.
+//  Copyright (c) 2013 Kynetx. All rights reserved.
 //
 
 #import <UIKit/UIKit.h>
 #import <MapKit/MapKit.h>
 #import "KXInteraction.h"
 
-@interface DetailViewController : UIViewController <UISplitViewControllerDelegate>
+@interface DetailViewController : UIViewController <UISplitViewControllerDelegate> // I think the split vew crap is for iPad stuff.
 
 @property (strong, nonatomic) NSDictionary* trip;
 @property (strong, nonatomic) IBOutlet UILabel* startTimeLabel;

@@ -3,7 +3,7 @@
 //  KXInteraction
 //
 //  Created by Alex Olson on 8/3/13.
-//  Copyright (c) 2013 Alex Olson. All rights reserved.
+//  Copyright (c) 2013 Kynetx. All rights reserved.
 //
 
 #import "KXInteraction.h"
@@ -343,7 +343,6 @@
 
 + (NSString*) evaluateHumanFriendlyTimeFromUTCTimestamp:(NSString *)unfriendlyUTCTimestamp {
 
-    
     // convert to local human-friendly datetime string
     NSDateFormatter* datePrettyPrinter = [[NSDateFormatter alloc] init];
     [datePrettyPrinter setTimeZone:[NSTimeZone defaultTimeZone]];
