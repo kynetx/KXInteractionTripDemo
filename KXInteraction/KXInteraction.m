@@ -362,9 +362,9 @@
     NSString* humanFriendlyTime;
     
     // if the date is...
-    if (dateDay  >= 11 && dateDay <= 19) { // ...between 11 - 19, because the gregorian calendar is weird like that.
+    if (dateDay  >= 11 && dateDay <= 19) { // ...between 11 - 19, it has a 'th' suffix, because the gregorian calendar is weird like that.
         humanFriendlyTime = [dateString stringByReplacingOccurrencesOfString:@"." withString:dateSuffixs[0]];
-    } else { // ...anything else, modulo it by 10 and return matching index in dateSuffixs array. This will return the correct suffix. Because math is cool like that.
+    } else { // ...anything else, modulo it by 10 and return matching index in dateSuffixs array. This will return the correct suffix. Because math is cool. Stay in school kids.
         humanFriendlyTime = [dateString stringByReplacingOccurrencesOfString:@"." withString:dateSuffixs[dateDay % 10]];
     }
     

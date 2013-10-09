@@ -159,7 +159,9 @@
     if ([[segue identifier] isEqualToString:@"showTripMap"]) {
         NSIndexPath *indexPath = [self.tableView indexPathForSelectedRow];
         NSDictionary *trip = trips[indexPath.row];
-        [[segue destinationViewController] setTrip:trip];
+        if ([[segue destinationViewController] respondsToSelector:@selector(setTrip:)]) {
+            [[segue destinationViewController] setTrip:trip];
+        }
     }
 }
 
