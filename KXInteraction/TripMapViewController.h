@@ -7,7 +7,11 @@
 //
 
 #import <UIKit/UIKit.h>
+#import <MapKit/MapKit.h>
 
-@interface TripMapViewController : UIViewController
+@interface TripMapViewController : UIViewController <MKMapViewDelegate>
+
+@property (strong, nonatomic) NSDictionary* trip;
+@property (strong, nonatomic) IBOutlet MKMapView* tripMap;
 
 @end

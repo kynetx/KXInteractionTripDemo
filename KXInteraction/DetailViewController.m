@@ -15,9 +15,9 @@
 
 @implementation DetailViewController
 
-@synthesize trip, startTimeLabel, endTimeLabel, tripMap;
+@synthesize trip, startTimeLabel, endTimeLabel, durationLabel;
 
-- (void)setTrip:(id)newTrip
+- (void)setTrip:(NSDictionary*)newTrip
 {
     if (trip != newTrip) {
         trip = newTrip;

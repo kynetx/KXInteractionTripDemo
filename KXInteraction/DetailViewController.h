@@ -7,7 +7,6 @@
 //
 
 #import <UIKit/UIKit.h>
-#import <MapKit/MapKit.h>
 #import "KXInteraction.h"
 
 @interface DetailViewController : UIViewController <UISplitViewControllerDelegate> // I think the split vew crap is for iPad stuff.
@@ -16,6 +15,5 @@
 @property (strong, nonatomic) IBOutlet UILabel* startTimeLabel;
 @property (strong, nonatomic) IBOutlet UILabel* endTimeLabel;
 @property (strong, nonatomic) IBOutlet UILabel* durationLabel;
-@property (strong, nonatomic) IBOutlet MKMapView* tripMap;
 
 @end

@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		792E63031807113000344E19 /* KXTripLocationAnnotation.m in Sources */ = {isa = PBXBuildFile; fileRef = 792E63021807113000344E19 /* KXTripLocationAnnotation.m */; };
+		792E63051807182500344E19 /* CoreLocation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 792E63041807182500344E19 /* CoreLocation.framework */; };
 		792FE94117ACFD6C00E29931 /* KXInteraction.m in Sources */ = {isa = PBXBuildFile; fileRef = 792FE94017ACFD6C00E29931 /* KXInteraction.m */; };
 		792FEB841803410600959863 /* MapKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 792FEB831803410600959863 /* MapKit.framework */; };
 		793369B417B1A42F00451B3C /* AssetsLibrary.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 793369B317B1A42F00451B3C /* AssetsLibrary.framework */; };
@@ -45,6 +47,9 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		792E63011807113000344E19 /* KXTripLocationAnnotation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KXTripLocationAnnotation.h; sourceTree = "<group>"; };
+		792E63021807113000344E19 /* KXTripLocationAnnotation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = KXTripLocationAnnotation.m; sourceTree = "<group>"; };
+		792E63041807182500344E19 /* CoreLocation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreLocation.framework; path = System/Library/Frameworks/CoreLocation.framework; sourceTree = SDKROOT; };
 		792FE93F17ACFD6C00E29931 /* KXInteraction.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KXInteraction.h; sourceTree = "<group>"; };
 		792FE94017ACFD6C00E29931 /* KXInteraction.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = KXInteraction.m; sourceTree = "<group>"; };
 		792FEB831803410600959863 /* MapKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MapKit.framework; path = System/Library/Frameworks/MapKit.framework; sourceTree = SDKROOT; };
@@ -86,6 +91,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				792E63051807182500344E19 /* CoreLocation.framework in Frameworks */,
 				792FEB841803410600959863 /* MapKit.framework in Frameworks */,
 				793369B417B1A42F00451B3C /* AssetsLibrary.framework in Frameworks */,
 				7960FA1E17ABB15C00026937 /* UIKit.framework in Frameworks */,
@@ -136,6 +142,7 @@
 		7960FA1C17ABB15C00026937 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				792E63041807182500344E19 /* CoreLocation.framework */,
 				792FEB831803410600959863 /* MapKit.framework */,
 				7960FA1D17ABB15C00026937 /* UIKit.framework */,
 				7960FA1F17ABB15C00026937 /* Foundation.framework */,
@@ -156,9 +163,11 @@
 				7960FA3C17ABB15C00026937 /* MasterViewController.m */,
 				792FE93F17ACFD6C00E29931 /* KXInteraction.h */,
 				792FE94017ACFD6C00E29931 /* KXInteraction.m */,
-				7960FA3E17ABB15C00026937 /* DetailViewController.h */,
 				797B3CF0180605E900255600 /* TripMapViewController.h */,
 				797B3CF1180605E900255600 /* TripMapViewController.m */,
+				792E63011807113000344E19 /* KXTripLocationAnnotation.h */,
+				792E63021807113000344E19 /* KXTripLocationAnnotation.m */,
+				7960FA3E17ABB15C00026937 /* DetailViewController.h */,
 				7960FA3F17ABB15C00026937 /* DetailViewController.m */,
 				7960FA2417ABB15C00026937 /* Supporting Files */,
 			);
@@ -314,6 +323,7 @@
 				7960FA3D17ABB15C00026937 /* MasterViewController.m in Sources */,
 				7960FA4017ABB15C00026937 /* DetailViewController.m in Sources */,
 				797B3CF2180605E900255600 /* TripMapViewController.m in Sources */,
+				792E63031807113000344E19 /* KXTripLocationAnnotation.m in Sources */,
 				792FE94117ACFD6C00E29931 /* KXInteraction.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
