@@ -42,8 +42,6 @@
     
     // plot the trip.
     [self plotTrip];
-    
-    NSLog(@"%@", trip);
 }
 
 - (void)didReceiveMemoryWarning
@@ -81,8 +79,29 @@
         [tripMap removeAnnotation:staleAnnotation]; // stale is gross. Like stale chips. Eww! Get rid of it! Banish said horribleness henceforth and forever!
     }
     
-    // now grab the
+    // now grab the trip start and end locations and plot them.
+    double startLat = [[trip valueForKeyPath:@"startWaypoint.latitude"] doubleValue];
+    double startLong = [[trip valueForKeyPath:@"startWaypoint.longitude"] doubleValue];
     
+    double endLat = [[trip valueForKeyPath:@"endWaypoint.latitude"] doubleValue];
+    double endLong = [[trip valueForKeyPath:@"endWaypoint.longitude"] doubleValue];
+    
+    CLGeocoder* geocoder = [[CLGeocoder alloc] init];
+    CLLocationCoordinate2D tripStartCoord = CLLocationCoordinate2DMake(startLat, startLong);
+    
+    CLLocation* tripStartLocation = [[CLLocation alloc] initWithLatitude:tripStartCoord.latitude longitude:tripStartCoord.longitude];
+    
+    // TODO: Nesting the reverse geocoding is not the most awesome thing in the world. Figure out a better way. There's always a better way.
+    [geocoder reverseGeocodeLocation:tripStartLocation completionHandler:^(NSArray* placemarks, NSError* error) {
+        // TODO: Check the error pointer for any possible errors and fail gracefully. For another day.
+        
+        // rarely, if ever, will the reverse geocoding service return
+        // more than one placemark. Even if it does, I sill only care about
+        // the first (most-accurate) one.
+        CLPlacemark* tripStartLocationPlacemark = placemarks[0];
+        
+        // get the second coordinate reverse geocoded.
+    }];
 }
 
 @end

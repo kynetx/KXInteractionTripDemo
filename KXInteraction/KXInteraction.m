@@ -79,7 +79,6 @@
     
     NSString* escapedCallbackURL = [cbURL stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
     NSURL* oauthURL = [self constructOAuthHandshakeDoorbellURL:appKey withCallback:[NSURL URLWithString:escapedCallbackURL]];
-    NSLog(@"%@", oauthURL);
     NSURLRequest* oauthRequest = [NSURLRequest requestWithURL:oauthURL];
     
     // programatically add UIWebview to handle user approval of OAuthentication.
