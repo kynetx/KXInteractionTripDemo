@@ -19,7 +19,7 @@
 
 @property (strong, nonatomic) NSString* address;
 
-@property (nonatomic) CLLocationCoordinate2D coordinate;
+@property (nonatomic, assign) CLLocationCoordinate2D coordinate;
 
 @end
 
@@ -36,6 +36,14 @@
     }
     
     return self;
+}
+
+- (NSString*) title {
+    return name;
+}
+
+- (NSString*) subtitle {
+    return address;
 }
 
 @end

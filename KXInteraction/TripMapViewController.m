@@ -57,12 +57,14 @@
     NSString* KXTripLocationIdentifier = @"KXTripLocationAnnotation";
     
     if ([annotation isKindOfClass:[KXTripLocationAnnotation class]]) {
-        MKAnnotationView* locationAnnotation = [tripMap dequeueReusableAnnotationViewWithIdentifier:KXTripLocationIdentifier];
+        MKPinAnnotationView* locationAnnotation = (MKPinAnnotationView*)[tripMap dequeueReusableAnnotationViewWithIdentifier:KXTripLocationIdentifier];
         
         if (locationAnnotation == nil) {
-            locationAnnotation = [[MKAnnotationView alloc] initWithAnnotation:annotation reuseIdentifier:KXTripLocationIdentifier];
+            locationAnnotation = [[MKPinAnnotationView alloc] initWithAnnotation:annotation reuseIdentifier:KXTripLocationIdentifier];
             locationAnnotation.enabled = YES;
             locationAnnotation.canShowCallout = YES;
+            locationAnnotation.animatesDrop = YES;
+            locationAnnotation.pinColor = MKPinAnnotationColorRed;
         } else {
             locationAnnotation.annotation = annotation;
         }
@@ -87,9 +89,12 @@
     double endLong = [[trip valueForKeyPath:@"endWaypoint.longitude"] doubleValue];
     
     CLGeocoder* geocoder = [[CLGeocoder alloc] init];
+    
     CLLocationCoordinate2D tripStartCoord = CLLocationCoordinate2DMake(startLat, startLong);
+    CLLocationCoordinate2D tripEndCoord = CLLocationCoordinate2DMake(endLat, endLong);
     
     CLLocation* tripStartLocation = [[CLLocation alloc] initWithLatitude:tripStartCoord.latitude longitude:tripStartCoord.longitude];
+    CLLocation* tripEndLocation = [[CLLocation alloc] initWithLatitude:tripEndCoord.latitude longitude:tripEndCoord.longitude];
     
     // TODO: Nesting the reverse geocoding is not the most awesome thing in the world. Figure out a better way. There's always a better way.
     [geocoder reverseGeocodeLocation:tripStartLocation completionHandler:^(NSArray* placemarks, NSError* error) {
@@ -100,7 +105,12 @@
         // the first (most-accurate) one.
         CLPlacemark* tripStartLocationPlacemark = placemarks[0];
         
-        // get the second coordinate reverse geocoded.
+        [geocoder reverseGeocodeLocation:tripEndLocation completionHandler:^(NSArray* placemarks, NSError* error) {
+            CLPlacemark* tripEndLocationPlacemark = placemarks[0];
+            [tripMap addAnnotation:[[KXTripLocationAnnotation alloc] initWithName:@"Start"
+                                                                          address:ABCreateStringWithAddressDictionary(tripEndLocationPlacemark.addressDictionary, NO)
+                                                                       coordinate:tripEndLocationPlacemark.location.coordinate]];
+        }];
     }];
 }
 
