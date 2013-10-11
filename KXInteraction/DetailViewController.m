@@ -58,7 +58,7 @@
     NSTimeInterval duration = endTImeSeconds - startTimeSeconds;
     NSLog(@"%f", duration);
     
-    self.durationLabel.text = @"25 minutes";
+    self.durationLabel.text = @"32 minutes";
     self.costLabel.text = @"$25.23";
     self.distanceLabel.text = [NSString stringWithFormat:@"%@ miles", [trip objectForKey:@"mileage"]];
 }
