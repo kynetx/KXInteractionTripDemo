@@ -100,9 +100,18 @@
     NSDictionary* thisTrip = trips[indexPath.row];
     cell.textLabel.text = [KXInteraction evaluateHumanFriendlyTimeFromUTCTimestamp:[thisTrip objectForKey:@"startTime"]];
     NSString* mileage = [thisTrip objectForKey:@"mileage"];
-    // genau is German for exact. But more exact than our exact. Yeah.
-    double genauMileage = [mileage doubleValue];
+    
+    double genauMileage;
+    
+    if (mileage != (id)[NSNull null]) {
+        // genau is German for exact. But more exact than our exact. Yeah.
+        genauMileage = [mileage doubleValue];
+    } else {
+        genauMileage = 0.0;
+    }
+    
     NSString* mileageText;
+    
     if (genauMileage < 0.1) { // if the trip mileage was less than a tenth of a mile, it becomes weird to look at exact mileage data.
         mileageText = @"Less than a tenth of a mile.";
     } else {

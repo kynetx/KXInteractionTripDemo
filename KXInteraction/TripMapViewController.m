@@ -75,18 +75,33 @@
     return nil;
 }
 
+// setup the polyline drawing awesomness.
+- (MKOverlayView*) mapView:(MKMapView *)mapView viewForOverlay:(id<MKOverlay>)overlay {
+    MKPolylineView* tripPolylineView = [[MKPolylineView alloc] initWithOverlay:overlay];
+    tripPolylineView.strokeColor = [UIColor blueColor];
+    tripPolylineView.lineWidth = 3.0;
+    return tripPolylineView;
+}
+
 - (void) plotTrip {
     // begin by removing the annotations for the previously plotted trip, if any.
     for (id<MKAnnotation> staleAnnotation in tripMap.annotations) {
         [tripMap removeAnnotation:staleAnnotation]; // stale is gross. Like stale chips. Eww! Get rid of it! Banish said horribleness henceforth and forever!
     }
     
-    // now grab the trip start and end locations and plot them.
-    double startLat = [[trip valueForKeyPath:@"startWaypoint.latitude"] doubleValue];
-    double startLong = [[trip valueForKeyPath:@"startWaypoint.longitude"] doubleValue];
-    
-    double endLat = [[trip valueForKeyPath:@"endWaypoint.latitude"] doubleValue];
-    double endLong = [[trip valueForKeyPath:@"endWaypoint.longitude"] doubleValue];
+    double startLat = 0.0, startLong = 0.0, endLat = 0.0, endLong = 0.0;
+    @try {
+        startLat = [[trip valueForKeyPath:@"startWaypoint.latitude"] doubleValue];
+        startLong = [[trip valueForKeyPath:@"startWaypoint.longitude"] doubleValue];
+        
+        endLat = [[trip valueForKeyPath:@"endWaypoint.latitude"] doubleValue];
+        endLong = [[trip valueForKeyPath:@"endWaypoint.longitude"] doubleValue];
+    }
+    @catch (NSException* exception) {
+        UIAlertView* broken = [[UIAlertView alloc] initWithTitle:@"API Failure" message:@"The Carvoyant API is being stupid." delegate:nil cancelButtonTitle:@"Yeah, I get it" otherButtonTitles:nil];
+        [broken show];
+    }
+
     
     CLGeocoder* geocoder = [[CLGeocoder alloc] init];
     
@@ -104,14 +119,48 @@
         // more than one placemark. Even if it does, I sill only care about
         // the first (most-accurate) one.
         CLPlacemark* tripStartLocationPlacemark = placemarks[0];
+        NSString* address = ABCreateStringWithAddressDictionary(tripStartLocationPlacemark.addressDictionary, NO);
+        NSArray* addressComponents = [address componentsSeparatedByString:@"\n"];
+        NSString* betterAddressFormat = [addressComponents componentsJoinedByString:@", "];
+        [tripMap addAnnotation:[[KXTripLocationAnnotation alloc] initWithName:@"Trip Start" address:betterAddressFormat coordinate:tripStartLocationPlacemark.location.coordinate]];
         
         [geocoder reverseGeocodeLocation:tripEndLocation completionHandler:^(NSArray* placemarks, NSError* error) {
             CLPlacemark* tripEndLocationPlacemark = placemarks[0];
-            [tripMap addAnnotation:[[KXTripLocationAnnotation alloc] initWithName:@"Start"
-                                                                          address:ABCreateStringWithAddressDictionary(tripEndLocationPlacemark.addressDictionary, NO)
-                                                                       coordinate:tripEndLocationPlacemark.location.coordinate]];
+            NSString* address = ABCreateStringWithAddressDictionary(tripEndLocationPlacemark.addressDictionary, NO);
+            NSArray* addressComponents = [address componentsSeparatedByString:@"\n"];
+            NSString* betterAddressFormat = [addressComponents componentsJoinedByString:@", "];
+            [tripMap addAnnotation:[[KXTripLocationAnnotation alloc] initWithName:@"Trip End" address:betterAddressFormat coordinate:tripEndLocationPlacemark.location.coordinate]];
+            
+            // zoom to the annotations
+            MKMapRect zoomRect = MKMapRectNull;
+            for (id<MKAnnotation> annotation in tripMap.annotations) {
+                MKMapPoint annotationPoint = MKMapPointForCoordinate(annotation.coordinate);
+                MKMapRect pointRect = MKMapRectMake(annotationPoint.x, annotationPoint.y, 0.1, 0.1);
+                zoomRect = MKMapRectUnion(zoomRect, pointRect);
+            }
+            
+            // add a little padding
+            double inset = -zoomRect.size.width * 2;
+            [tripMap setVisibleMapRect:MKMapRectInset(zoomRect, inset, inset) animated:YES];
+            
+            CLLocationCoordinate2D* tripPolylineCoords = malloc(2 * sizeof(CLLocationCoordinate2D));
+            tripPolylineCoords[0] = tripStartLocationPlacemark.location.coordinate;
+            tripPolylineCoords[1] = tripEndLocationPlacemark.location.coordinate;
+            
+            MKPolyline* tripPolyline = [MKPolyline polylineWithCoordinates:tripPolylineCoords count:2];
+            free(tripPolylineCoords);
+            
+            [tripMap addOverlay:tripPolyline];
         }];
     }];
+}
+
+- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
+    if ([[segue identifier] isEqualToString:@"showTripDetail"]) {
+        if ([[segue destinationViewController] respondsToSelector:@selector(setTrip:)]) {
+            [[segue destinationViewController] setTrip:trip];
+        }
+    }
 }
 
 @end

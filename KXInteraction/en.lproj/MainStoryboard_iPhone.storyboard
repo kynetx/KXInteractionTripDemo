@@ -105,7 +105,7 @@
                         <barButtonItem key="rightBarButtonItem" image="trip_info_icon.png" id="XCf-Hr-sxJ">
                             <color key="tintColor" red="0.99183756560000003" green="1" blue="0.91571767599999998" alpha="1" colorSpace="calibratedRGB"/>
                             <connections>
-                                <segue destination="21" kind="push" id="mZh-ed-jFQ"/>
+                                <segue destination="21" kind="push" identifier="showTripDetail" id="mZh-ed-jFQ"/>
                             </connections>
                         </barButtonItem>
                     </navigationItem>
@@ -148,13 +148,13 @@
                                 <nil key="highlightedColor"/>
                             </label>
                             <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="End TIme Value" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="3GO-yk-rlF">
-                                <rect key="frame" x="117" y="180" width="210" height="21"/>
+                                <rect key="frame" x="117" y="151" width="210" height="21"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                 <nil key="highlightedColor"/>
                             </label>
                             <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Duration Value" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="MD6-bG-1Ix">
-                                <rect key="frame" x="117" y="151" width="210" height="21"/>
+                                <rect key="frame" x="117" y="180" width="210" height="21"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                 <nil key="highlightedColor"/>
@@ -202,6 +202,9 @@
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="14"/>
                                 <textInputTraits key="textInputTraits"/>
+                                <connections>
+                                    <outlet property="delegate" destination="21" id="IKq-7F-GIu"/>
+                                </connections>
                             </textField>
                             <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" fixedFrame="YES" text="A long time ago in a Galaxy far, far away, I took a trip." translatesAutoresizingMaskIntoConstraints="NO" id="8fp-Vm-0ZW">
                                 <rect key="frame" x="37" y="317" width="234" height="167"/>
@@ -210,6 +213,9 @@
                                 <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                 <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
                                 <dataDetectorType key="dataDetectorTypes" phoneNumber="YES" link="YES" address="YES" calendarEvent="YES"/>
+                                <connections>
+                                    <outlet property="delegate" destination="21" id="3fv-UQ-SPE"/>
+                                </connections>
                             </textView>
                             <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Additional Notes:" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="z1m-6W-fR6">
                                 <rect key="frame" x="88" y="294" width="132" height="21"/>
@@ -229,15 +235,23 @@
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                 <textInputTraits key="textInputTraits"/>
+                                <connections>
+                                    <outlet property="delegate" destination="21" id="s4h-hx-OJh"/>
+                                </connections>
                             </textField>
                         </subviews>
                         <color key="backgroundColor" red="0.9167770127118644" green="0.91309372156115698" blue="0.90204384810903471" alpha="1" colorSpace="calibratedRGB"/>
                     </view>
                     <navigationItem key="navigationItem" title="Trip Info" id="26"/>
                     <connections>
+                        <outlet property="costLabel" destination="duB-DQ-7YV" id="AfP-DE-i2T"/>
+                        <outlet property="distanceLabel" destination="bAU-af-Oub" id="mm2-L2-3VY"/>
                         <outlet property="durationLabel" destination="MD6-bG-1Ix" id="6qY-sH-leH"/>
                         <outlet property="endTimeLabel" destination="3GO-yk-rlF" id="bGh-sr-3sS"/>
+                        <outlet property="nameTextField" destination="U6f-pI-ZTE" id="93Z-8J-D8f"/>
+                        <outlet property="notesTextView" destination="8fp-Vm-0ZW" id="dEB-Ib-alP"/>
                         <outlet property="startTimeLabel" destination="lf6-Bj-W4C" id="ROH-gA-ONH"/>
+                        <outlet property="tagsTextField" destination="FiF-7D-3fl" id="YQ3-Ec-ZJM"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="23" sceneMemberID="firstResponder"/>
